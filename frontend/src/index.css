@@ -53,3 +53,24 @@ body {
 .App {
   min-height: 100vh;
 }
+
+/* Animações para o ranking */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hover effects */
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+.hover\:-translate-y-2:hover {
+  transform: translateY(-8px);
+}
