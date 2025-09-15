@@ -41,14 +41,6 @@ function Ranking() {
     }
   };
 
-  const getPositionClass = (position) => {
-    switch (position) {
-      case 1: return 'first-place';
-      case 2: return 'second-place';
-      case 3: return 'third-place';
-      default: return '';
-    }
-  };
 
   if (loading && ranking.length === 0) {
     return (
