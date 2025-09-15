@@ -88,9 +88,9 @@ function Ranking() {
         ) : (
           <div className="flex items-end justify-center gap-8 min-h-[calc(100vh-200px)] relative px-8">
             {ranking.map((director, index) => {
-              const podiumHeight = director.posicao === 1 ? 'h-[450px] md:h-[520px]' :
-                                  director.posicao === 2 ? 'h-96 md:h-[420px]' :
-                                  director.posicao === 3 ? 'h-80 md:h-[360px]' : 'h-72 md:h-80';
+              const podiumHeight = director.posicao === 1 ? 'h-[562px] md:h-[650px]' :
+                                  director.posicao === 2 ? 'h-[480px] md:h-[525px]' :
+                                  director.posicao === 3 ? 'h-[400px] md:h-[450px]' : 'h-[316px] md:h-[352px]';
 
               const podiumOrder = director.posicao === 1 ? 'order-2' :
                                  director.posicao === 2 ? 'order-1' :
@@ -108,7 +108,7 @@ function Ranking() {
                       : director.posicao === 3
                       ? 'bg-amber-600 border-b-4 border-amber-700'
                       : 'bg-slate-500 border-b-4 border-slate-600'
-                  } rounded-t-3xl flex flex-col justify-end p-4 relative transition-all duration-500 hover:scale-105 hover:-translate-y-1`}
+                  } rounded-t-3xl flex flex-col justify-between p-4 relative transition-all duration-500 hover:scale-105 hover:-translate-y-1`}
                   style={{
                     animationDelay: `${index * 200}ms`,
                     animation: 'podiumRise 0.8s ease-out forwards'
@@ -123,7 +123,7 @@ function Ranking() {
                         : director.posicao === 3
                         ? 'border-l-amber-600'
                         : 'border-l-slate-500'
-                    } rounded-lg p-4 mb-4 transition-all duration-200 relative z-10`}
+                    } rounded-lg p-4 transition-all duration-200 relative z-10`}
                     style={{
                       backgroundColor: director.posicao === 1 ? '#f8913c' :
                                      director.posicao === 2 ? '#e5e7eb' :
@@ -163,7 +163,7 @@ function Ranking() {
                     </div>
 
                     {/* Métricas no corpo do pódio - lado a lado */}
-                    <div className="grid grid-cols-3 gap-3 mb-6 relative z-10">
+                    <div className="grid grid-cols-3 gap-3 relative z-10">
                       <div className="bg-white rounded-lg p-3 text-center transition-all duration-200">
                         <div className="text-base font-bold text-gray-800 mb-1">{director.agendamentos}</div>
                         <div className="text-xs text-gray-600 mb-2 leading-tight">Agendamentos</div>
