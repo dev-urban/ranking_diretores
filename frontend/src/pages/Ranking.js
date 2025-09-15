@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { rankingService } from '../services/api';
-import './Ranking.css';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
 
 function Ranking() {
   const [ranking, setRanking] = useState([]);
@@ -51,87 +52,131 @@ function Ranking() {
 
   if (loading && ranking.length === 0) {
     return (
-      <div className="ranking-container">
-        <div className="ranking-header">
-          <h1>🏆 Ranking de Diretores</h1>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 p-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-white mb-2">🏆 Ranking de Diretores</h1>
+          </div>
+          <div className="text-center text-white">Carregando ranking...</div>
         </div>
-        <div className="loading">Carregando ranking...</div>
       </div>
     );
   }
 
   return (
-    <div className="ranking-container">
-      <div className="ranking-header">
-        <h1>🏆 Ranking de Diretores</h1>
-        {lastUpdate && (
-          <div className="last-update">
-            Última atualização: {lastUpdate.toLocaleTimeString()}
-          </div>
-        )}
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 p-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-white mb-2">🏆 Ranking de Diretores</h1>
+          {lastUpdate && (
+            <div className="text-sm text-slate-300">
+              Última atualização: {lastUpdate.toLocaleTimeString()}
+            </div>
+          )}
+        </div>
 
-      <div className="ranking-content">
         {error && (
-          <div className="error-message">
-            {error}
-            <button onClick={loadRanking} className="retry-btn">
-              Tentar novamente
-            </button>
-          </div>
+          <Card className="mb-6 border-red-500/20 bg-red-950/50">
+            <CardContent className="pt-6">
+              <div className="text-center text-red-200">
+                {error}
+                <Button
+                  onClick={loadRanking}
+                  variant="destructive"
+                  className="mt-4"
+                >
+                  Tentar novamente
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         )}
 
         {ranking.length === 0 && !loading ? (
-          <div className="no-data">
-            Nenhum diretor encontrado no ranking.
-          </div>
-        ) : (
-          <div className="ranking-list">
-            {ranking.map((director) => (
-              <div
-                key={director.id}
-                className={`ranking-item ${getPositionClass(director.posicao)}`}
-              >
-                <div className="position">
-                  <span className="position-number">#{director.posicao}</span>
-                  <span className="position-emoji">{getPositionEmoji(director.posicao)}</span>
-                </div>
-
-                <div className="director-info">
-                  <h3>Plataforma {director.username}</h3>
-                  <p>{director.email}</p>
-                </div>
-
-                <div className="metrics">
-                  <div className="metric">
-                    <span className="metric-label">Agendamentos</span>
-                    <span className="metric-value">{director.agendamentos}</span>
-                    <span className="metric-points">({director.detalhePontos.pontosAgendamentos}pts)</span>
-                  </div>
-                  <div className="metric">
-                    <span className="metric-label">Visitas</span>
-                    <span className="metric-value">{director.visitasRealizadas}</span>
-                    <span className="metric-points">({director.detalhePontos.pontosVisitas}pts)</span>
-                  </div>
-                  <div className="metric">
-                    <span className="metric-label">Contratos</span>
-                    <span className="metric-value">{director.contratosAssinados}</span>
-                    <span className="metric-points">({director.detalhePontos.pontosContratos}pts)</span>
-                  </div>
-                </div>
-
-                <div className="total-score">
-                  <span className="score-label">Total</span>
-                  <span className="score-value">{director.pontuacaoTotal}</span>
-                  <span className="score-unit">pts</span>
-                </div>
+          <Card className="border-slate-700 bg-slate-800/50">
+            <CardContent className="pt-6">
+              <div className="text-center text-slate-300">
+                Nenhum diretor encontrado no ranking.
               </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="space-y-4">
+            {ranking.map((director) => (
+              <Card
+                key={director.id}
+                className={`border-slate-700 ${
+                  director.posicao === 1
+                    ? 'bg-gradient-to-r from-orange-500/20 to-orange-600/20 border-orange-500/50'
+                    : director.posicao === 2
+                    ? 'bg-gradient-to-r from-slate-400/20 to-slate-500/20 border-slate-400/50'
+                    : director.posicao === 3
+                    ? 'bg-gradient-to-r from-amber-600/20 to-amber-700/20 border-amber-600/50'
+                    : 'bg-slate-800/50'
+                }`}
+              >
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl font-bold text-white">
+                        #{director.posicao}
+                      </span>
+                      <span className="text-2xl">
+                        {getPositionEmoji(director.posicao)}
+                      </span>
+                      <div>
+                        <CardTitle className="text-xl text-white">
+                          Plataforma {director.username}
+                        </CardTitle>
+                        <p className="text-sm text-slate-400">{director.email}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-white">
+                        {director.pontuacaoTotal}
+                      </div>
+                      <div className="text-sm text-slate-400">pts</div>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="text-center">
+                      <div className="text-lg font-semibold text-white">
+                        {director.agendamentos}
+                      </div>
+                      <div className="text-sm text-slate-400">Agendamentos</div>
+                      <div className="text-xs text-slate-500">
+                        ({director.detalhePontos.pontosAgendamentos}pts)
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg font-semibold text-white">
+                        {director.visitasRealizadas}
+                      </div>
+                      <div className="text-sm text-slate-400">Visitas</div>
+                      <div className="text-xs text-slate-500">
+                        ({director.detalhePontos.pontosVisitas}pts)
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg font-semibold text-white">
+                        {director.contratosAssinados}
+                      </div>
+                      <div className="text-sm text-slate-400">Contratos</div>
+                      <div className="text-xs text-slate-500">
+                        ({director.detalhePontos.pontosContratos}pts)
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         )}
 
-        <div className="ranking-footer">
-          <p className="auto-update-info">
+        <div className="text-center mt-8">
+          <p className="text-sm text-slate-400">
             📱 Esta página atualiza automaticamente a cada 30 segundos
           </p>
         </div>
