@@ -89,8 +89,8 @@ function Ranking() {
           <div className="flex items-end justify-center gap-8 min-h-[calc(100vh-200px)] relative px-8">
             {ranking.map((director, index) => {
               const podiumHeight = director.posicao === 1 ? 'h-[450px] md:h-[520px]' :
-                                  director.posicao === 2 ? 'h-80 md:h-[380px]' :
-                                  director.posicao === 3 ? 'h-72 md:h-[320px]' : 'h-64 md:h-80';
+                                  director.posicao === 2 ? 'h-96 md:h-[420px]' :
+                                  director.posicao === 3 ? 'h-80 md:h-[360px]' : 'h-72 md:h-80';
 
               const podiumOrder = director.posicao === 1 ? 'order-2' :
                                  director.posicao === 2 ? 'order-1' :
@@ -108,7 +108,7 @@ function Ranking() {
                       : director.posicao === 3
                       ? 'bg-amber-600 border-b-4 border-amber-700'
                       : 'bg-slate-500 border-b-4 border-slate-600'
-                  } rounded-t-3xl flex flex-col justify-start p-4 relative transition-all duration-500 hover:scale-105 hover:-translate-y-1`}
+                  } rounded-t-3xl flex flex-col justify-end p-4 relative transition-all duration-500 hover:scale-105 hover:-translate-y-1`}
                   style={{
                     animationDelay: `${index * 200}ms`,
                     animation: 'podiumRise 0.8s ease-out forwards'
@@ -125,8 +125,8 @@ function Ranking() {
                         : 'border-l-slate-500'
                     } rounded-lg p-4 mb-4 transition-all duration-200 relative z-10`}
                     style={{
-                      backgroundColor: director.posicao === 1 ? '#FB923C' :
-                                     director.posicao === 2 ? '#E5E7EB' :
+                      backgroundColor: director.posicao === 1 ? '#f8913c' :
+                                     director.posicao === 2 ? '#e5e7eb' :
                                      director.posicao === 3 ? '#D97706' : '#64748B'
                     }}>
                       <div className="text-center">
