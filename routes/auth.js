@@ -5,22 +5,31 @@ const User = require('../models/User');
 
 router.post('/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await User.findByUsername(username);
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+    }
+
+    const user = await User.findByEmail(email);
 
     if (!user) {
-      return res.status(401).json({ error: 'Credenciais inválidas' });
+      return res.status(401).json({ error: 'Email não encontrado ou usuário não é diretor' });
     }
 
     const isValid = await User.validatePassword(password, user.password);
 
     if (!isValid) {
-      return res.status(401).json({ error: 'Credenciais inválidas' });
+      return res.status(401).json({ error: 'Senha incorreta' });
+    }
+
+    // Verificar se é diretor (role_id = 3)
+    if (user.role_id !== 3) {
+      return res.status(403).json({ error: 'Acesso negado. Apenas diretores podem acessar.' });
     }
 
     const token = jwt.sign(
-      { userId: user.id, username: user.username },
+      { userId: user.id, username: user.username, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
@@ -30,12 +39,13 @@ router.post('/login', async (req, res) => {
       user: {
         id: user.id,
         username: user.username,
-        email: user.email
+        email: user.email,
+        role_id: user.role_id
       }
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erro no servidor' });
+    console.error('Erro no login:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
 

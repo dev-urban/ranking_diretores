@@ -64,21 +64,11 @@ function Ranking() {
     <div className="ranking-container">
       <div className="ranking-header">
         <h1>🏆 Ranking de Diretores</h1>
-        <div className="ranking-info">
-          <div className="scoring-info">
-            <h3>Sistema de Pontuação:</h3>
-            <ul>
-              <li>Agendamentos: <strong>5 pontos</strong></li>
-              <li>Visitas Realizadas: <strong>20 pontos</strong></li>
-              <li>Contratos Assinados: <strong>50 pontos</strong></li>
-            </ul>
+        {lastUpdate && (
+          <div className="last-update">
+            Última atualização: {lastUpdate.toLocaleTimeString()}
           </div>
-          {lastUpdate && (
-            <div className="last-update">
-              Última atualização: {lastUpdate.toLocaleTimeString()}
-            </div>
-          )}
-        </div>
+        )}
       </div>
 
       <div className="ranking-content">
@@ -108,7 +98,7 @@ function Ranking() {
                 </div>
 
                 <div className="director-info">
-                  <h3>{director.username}</h3>
+                  <h3>Plataforma {director.username}</h3>
                   <p>{director.email}</p>
                 </div>
 
@@ -141,9 +131,6 @@ function Ranking() {
         )}
 
         <div className="ranking-footer">
-          <p>
-            <a href="/login">Acesso para Diretores →</a>
-          </p>
           <p className="auto-update-info">
             📱 Esta página atualiza automaticamente a cada 30 segundos
           </p>
