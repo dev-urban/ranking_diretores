@@ -31,6 +31,12 @@ Sistema para ranking de diretores baseado em métricas de performance com fronte
 └── README.md
 ```
 
+## Requisitos
+
+- Node.js 20+
+- NPM 10+
+- MySQL
+
 ## Configuração Local
 
 ### Instalação Completa
