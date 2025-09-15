@@ -90,15 +90,17 @@ function Ranking() {
             {ranking.map((director, index) => {
               const podiumHeight = director.posicao === 1 ? 'h-96 md:h-[420px]' :
                                   director.posicao === 2 ? 'h-80 md:h-96' :
-                                  director.posicao === 3 ? 'h-72 md:h-80' : 'h-64 md:h-72';
+                                  director.posicao === 3 ? 'h-80 md:h-96' : 'h-80 md:h-96';
 
               const podiumOrder = director.posicao === 1 ? 'order-2' :
                                  director.posicao === 2 ? 'order-1' :
                                  director.posicao === 3 ? 'order-3' :
                                  'order-4';
 
+              const marginClass = director.posicao === 4 ? 'ml-8 md:ml-16' : '';
+
               return (
-                <div key={director.id} className={`flex flex-col items-center ${podiumOrder} animate-in column-delay-${index}`}>
+                <div key={director.id} className={`flex flex-col items-center ${podiumOrder} ${marginClass} animate-in column-delay-${index}`}>
                   {/* Pódio Base */}
                   <div className={`w-56 md:w-72 lg:w-80 ${podiumHeight} ${
                     director.posicao === 1
@@ -130,24 +132,17 @@ function Ranking() {
                                      director.posicao === 3 ? '#B87C4C' : '#37353E'
                     }}>
                       <div className="text-center">
-                        {/* Posição e Emoji */}
-                        <div className="flex items-center justify-center gap-2 mb-3">
-                          <div className={`rounded-full w-12 h-12 flex items-center justify-center border-2 shadow-md ${
-                            director.posicao === 1
-                              ? 'bg-emerald-500 border-emerald-600 text-white'
-                              : director.posicao === 2
-                              ? 'bg-blue-500 border-blue-600 text-white'
-                              : director.posicao === 3
-                              ? 'bg-purple-500 border-purple-600 text-white'
-                              : 'bg-gray-500 border-gray-600 text-white'
-                          }`}>
-                            <span className="text-xl font-bold">
+                        {/* Emoji da Posição */}
+                        <div className="flex items-center justify-center mb-3">
+                          {director.posicao <= 3 ? (
+                            <span className="text-4xl">
+                              {getPositionEmoji(director.posicao)}
+                            </span>
+                          ) : (
+                            <span className="text-2xl font-bold text-white">
                               #{director.posicao}
                             </span>
-                          </div>
-                          <span className="text-3xl">
-                            {getPositionEmoji(director.posicao)}
-                          </span>
+                          )}
                         </div>
 
                         {/* Nome */}
@@ -160,36 +155,36 @@ function Ranking() {
                         </h3>
 
                         {/* Pontuação Total */}
-                        <div className="rounded-xl px-4 py-2 mb-3 shadow-md bg-black/20 border border-white/30">
-                          <div className="text-2xl font-bold text-white">
+                        <div className="rounded-xl px-4 py-2 mb-3 shadow-md bg-white">
+                          <div className="text-2xl font-bold text-gray-800">
                             {director.pontuacaoTotal}
                           </div>
-                          <div className="text-xs text-white/80">pontos</div>
+                          <div className="text-xs text-gray-600">pontos</div>
                         </div>
                       </div>
                     </div>
 
                     {/* Métricas no corpo do pódio - lado a lado */}
-                    <div className="grid grid-cols-3 gap-3 mb-6 relative z-10">
-                      <div className="bg-white border-l-4 border-l-emerald-500 rounded-lg p-3 text-center shadow-sm hover:shadow-md transition-all duration-200">
-                        <div className="text-base font-bold text-gray-800 mb-1">{director.agendamentos}</div>
-                        <div className="text-xs text-gray-600 mb-2">Agendamentos</div>
+                    <div className="grid grid-cols-3 gap-4 mb-6 relative z-10">
+                      <div className="bg-white rounded-lg p-4 text-center shadow-sm hover:shadow-md transition-all duration-200">
+                        <div className="text-lg font-bold text-gray-800 mb-1">{director.agendamentos}</div>
+                        <div className="text-sm text-gray-600 mb-2">Agendamentos</div>
                         <div className="text-xs text-emerald-700 bg-emerald-500/25 rounded-full px-2 py-1">
                           {director.detalhePontos.pontosAgendamentos}pts
                         </div>
                       </div>
 
-                      <div className="bg-white border-l-4 border-l-blue-500 rounded-lg p-3 text-center shadow-sm hover:shadow-md transition-all duration-200">
-                        <div className="text-base font-bold text-gray-800 mb-1">{director.visitasRealizadas}</div>
-                        <div className="text-xs text-gray-600 mb-2">Visitas</div>
+                      <div className="bg-white rounded-lg p-4 text-center shadow-sm hover:shadow-md transition-all duration-200">
+                        <div className="text-lg font-bold text-gray-800 mb-1">{director.visitasRealizadas}</div>
+                        <div className="text-sm text-gray-600 mb-2">Visitas</div>
                         <div className="text-xs text-blue-700 bg-blue-500/25 rounded-full px-2 py-1">
                           {director.detalhePontos.pontosVisitas}pts
                         </div>
                       </div>
 
-                      <div className="bg-white border-l-4 border-l-purple-500 rounded-lg p-3 text-center shadow-sm hover:shadow-md transition-all duration-200">
-                        <div className="text-base font-bold text-gray-800 mb-1">{director.contratosAssinados}</div>
-                        <div className="text-xs text-gray-600 mb-2">Contratos</div>
+                      <div className="bg-white rounded-lg p-4 text-center shadow-sm hover:shadow-md transition-all duration-200">
+                        <div className="text-lg font-bold text-gray-800 mb-1">{director.contratosAssinados}</div>
+                        <div className="text-sm text-gray-600 mb-2">Contratos</div>
                         <div className="text-xs text-purple-700 bg-purple-500/25 rounded-full px-2 py-1">
                           {director.detalhePontos.pontosContratos}pts
                         </div>
