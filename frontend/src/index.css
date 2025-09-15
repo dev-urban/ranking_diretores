@@ -66,6 +66,20 @@ body {
   }
 }
 
+/* Animação do pódio - cresce de baixo para cima */
+@keyframes podiumRise {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+}
+
 /* Hover effects */
 .hover\:scale-105:hover {
   transform: scale(1.05);
