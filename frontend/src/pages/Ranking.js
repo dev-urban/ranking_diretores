@@ -115,15 +115,20 @@ function Ranking() {
                   }}>
 
                     {/* Card do Diretor no topo do pódio */}
-                    <div className={`bg-white border-l-4 ${
+                    <div className={`border-l-4 ${
                       director.posicao === 1
-                        ? 'border-l-emerald-500 bg-emerald-50'
+                        ? 'border-l-emerald-500'
                         : director.posicao === 2
-                        ? 'border-l-blue-500 bg-blue-50'
+                        ? 'border-l-blue-500'
                         : director.posicao === 3
-                        ? 'border-l-purple-500 bg-purple-50'
-                        : 'border-l-gray-500 bg-gray-50'
+                        ? 'border-l-purple-500'
+                        : 'border-l-gray-500'
                     } rounded-lg p-4 mb-4 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-200 relative z-10`}
+                    style={{
+                      backgroundColor: director.posicao === 1 ? '#FAA533' :
+                                     director.posicao === 2 ? '#F0F0F0' :
+                                     director.posicao === 3 ? '#B87C4C' : '#37353E'
+                    }}>
                       <div className="text-center">
                         {/* Posição e Emoji */}
                         <div className="flex items-center justify-center gap-2 mb-3">
@@ -146,32 +151,20 @@ function Ranking() {
                         </div>
 
                         {/* Nome */}
-                        <h3 className="text-lg font-bold text-gray-800 mb-2">
+                        <h3 className={`text-lg font-bold mb-2 ${
+                          director.posicao === 1 ? 'text-white' :
+                          director.posicao === 2 ? 'text-gray-800' :
+                          director.posicao === 3 ? 'text-white' : 'text-white'
+                        }`}>
                           Plataforma {director.username}
                         </h3>
 
                         {/* Pontuação Total */}
-                        <div className={`rounded-xl px-4 py-2 mb-3 shadow-md ${
-                          director.posicao === 1
-                            ? 'bg-emerald-500/25 border border-emerald-500/50'
-                            : director.posicao === 2
-                            ? 'bg-blue-500/25 border border-blue-500/50'
-                            : director.posicao === 3
-                            ? 'bg-purple-500/25 border border-purple-500/50'
-                            : 'bg-gray-500/25 border border-gray-500/50'
-                        }`}>
-                          <div className={`text-2xl font-bold ${
-                            director.posicao === 1
-                              ? 'text-emerald-700'
-                              : director.posicao === 2
-                              ? 'text-blue-700'
-                              : director.posicao === 3
-                              ? 'text-purple-700'
-                              : 'text-gray-700'
-                          }`}>
+                        <div className="rounded-xl px-4 py-2 mb-3 shadow-md bg-black/20 border border-white/30">
+                          <div className="text-2xl font-bold text-white">
                             {director.pontuacaoTotal}
                           </div>
-                          <div className="text-xs text-gray-600">pontos</div>
+                          <div className="text-xs text-white/80">pontos</div>
                         </div>
                       </div>
                     </div>
