@@ -4,7 +4,7 @@ import { authService, metricsService } from '../services/api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import { Calendar, Building2, FileText, Trophy, ExternalLink, LogOut } from 'lucide-react';
+import { Calendar, Building2, FileText, Trophy, LogOut } from 'lucide-react';
 
 function Dashboard() {
   const [metrics, setMetrics] = useState({
