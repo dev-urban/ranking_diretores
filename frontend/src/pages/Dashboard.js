@@ -4,6 +4,7 @@ import { authService, metricsService } from '../services/api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { Calendar, Building2, FileText, Trophy, ExternalLink, LogOut } from 'lucide-react';
 
 function Dashboard() {
   const [metrics, setMetrics] = useState({
@@ -90,32 +91,45 @@ function Dashboard() {
   const points = calculatePoints();
 
   return (
-    <div className="min-h-screen bg-black p-4">
+    <div className="min-h-screen bg-background p-4">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-white">Painel de Métricas</h1>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Trophy className="h-6 w-6 text-primary" />
+            </div>
+            <h1 className="text-3xl font-bold text-foreground">
+              Painel de Métricas
+            </h1>
+          </div>
           <div className="flex items-center gap-4">
-            <span className="text-slate-300">Olá, {user?.username}</span>
+            <span className="text-muted-foreground">Olá, {user?.username}</span>
             <Button
               onClick={authService.logout}
               variant="outline"
-              className="border-slate-600 text-slate-300 hover:bg-slate-700"
+              size="sm"
+              className="gap-2"
             >
+              <LogOut className="h-4 w-4" />
               Sair
             </Button>
           </div>
         </div>
 
         <div className="grid gap-6">
-          <Card className="border-white/20 bg-white/90 backdrop-blur-sm shadow-xl">
+          <Card className="border shadow-sm animate-in slide-in-from-bottom-4 duration-200">
             <CardHeader>
-              <CardTitle className="text-xl text-gray-800">Atualizar Métricas</CardTitle>
+              <CardTitle className="text-xl text-foreground font-semibold">Atualizar Métricas</CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Gerencie suas métricas de performance
+              </p>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-800">
+                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
                       Agendamentos (5 pontos cada)
                     </label>
                     <div className="flex items-center gap-4">
@@ -125,16 +139,17 @@ function Dashboard() {
                         onChange={(e) => handleChange('agendamentos', e.target.value)}
                         min="0"
                         disabled={loading}
-                        className="bg-white border-gray-300 text-gray-800"
+                        className="h-10"
                       />
-                      <span className="text-sm text-orange-600 font-medium min-w-[80px] bg-orange-100 px-3 py-1 rounded-full">
+                      <span className="text-sm text-emerald-700 font-medium min-w-[100px] bg-emerald-50 px-3 py-2 rounded-md border border-emerald-200">
                         {points.pontosAgendamentos} pontos
                       </span>
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-800">
+                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                      <Building2 className="h-4 w-4" />
                       Visitas Realizadas (20 pontos cada)
                     </label>
                     <div className="flex items-center gap-4">
@@ -144,16 +159,17 @@ function Dashboard() {
                         onChange={(e) => handleChange('visitasRealizadas', e.target.value)}
                         min="0"
                         disabled={loading}
-                        className="bg-white border-gray-300 text-gray-800"
+                        className="h-10"
                       />
-                      <span className="text-sm text-orange-600 font-medium min-w-[80px] bg-orange-100 px-3 py-1 rounded-full">
+                      <span className="text-sm text-blue-700 font-medium min-w-[100px] bg-blue-50 px-3 py-2 rounded-md border border-blue-200">
                         {points.pontosVisitas} pontos
                       </span>
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-800">
+                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                      <FileText className="h-4 w-4" />
                       Contratos Assinados (50 pontos cada)
                     </label>
                     <div className="flex items-center gap-4">
@@ -163,30 +179,36 @@ function Dashboard() {
                         onChange={(e) => handleChange('contratosAssinados', e.target.value)}
                         min="0"
                         disabled={loading}
-                        className="bg-white border-gray-300 text-gray-800"
+                        className="h-10"
                       />
-                      <span className="text-sm text-orange-600 font-medium min-w-[80px] bg-orange-100 px-3 py-1 rounded-full">
+                      <span className="text-sm text-purple-700 font-medium min-w-[100px] bg-purple-50 px-3 py-2 rounded-md border border-purple-200">
                         {points.pontosContratos} pontos
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <Card className="border-orange-300 bg-gradient-to-r from-orange-400 to-orange-500 shadow-lg">
+                <Card className="border-primary/20 bg-primary/5">
                   <CardContent className="pt-6">
                     <div className="text-center">
-                      <h3 className="text-2xl font-bold text-white">
-                        Total de Pontos: {points.total}
-                      </h3>
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <Trophy className="h-6 w-6 text-primary" />
+                        <h3 className="text-2xl font-bold text-foreground">
+                          Total: {points.total} pontos
+                        </h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Sua pontuação atual no ranking
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
 
                 {message && (
-                  <div className={`text-sm p-3 rounded-md border ${
+                  <div className={`text-sm p-3 rounded-md border animate-in slide-in-from-bottom-1 duration-200 ${
                     message.includes('sucesso')
-                      ? 'text-green-400 bg-green-950/50 border-green-500/20'
-                      : 'text-red-400 bg-red-950/50 border-red-500/20'
+                      ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                      : 'text-destructive bg-destructive/10 border-destructive/20'
                   }`}>
                     {message}
                   </div>
@@ -195,7 +217,7 @@ function Dashboard() {
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700"
+                  className="w-full h-10 bg-primary text-primary-foreground hover:bg-primary/90"
                 >
                   {loading ? 'Salvando...' : 'Salvar Métricas'}
                 </Button>
@@ -203,16 +225,18 @@ function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card className="border-white/20 bg-white/90 backdrop-blur-sm shadow-xl">
+          <Card className="border shadow-sm animate-in slide-in-from-bottom-6 duration-300">
             <CardContent className="pt-6">
               <div className="text-center">
                 <Button
                   asChild
                   variant="outline"
-                  className="border-gray-300 text-gray-800 hover:bg-gray-100"
+                  className="gap-2"
                 >
                   <a href="/ranking" target="_blank" rel="noopener noreferrer">
+                    <Trophy className="h-4 w-4" />
                     Ver Ranking Público
+                    <ExternalLink className="h-4 w-4" />
                   </a>
                 </Button>
               </div>

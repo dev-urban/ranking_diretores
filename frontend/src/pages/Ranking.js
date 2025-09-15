@@ -127,7 +127,7 @@ function Ranking() {
                     style={{
                       backgroundColor: director.posicao === 1 ? '#f8913c' :
                                      director.posicao === 2 ? '#e5e7eb' :
-                                     director.posicao === 3 ? '#D97706' : '#64748B'
+                                     director.posicao === 3 ? '#F59E0B' : '#94A3B8'
                     }}>
                       <div className="text-center">
                         {/* Emoji da Posição */}
