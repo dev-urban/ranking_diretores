@@ -86,7 +86,7 @@ function Ranking() {
             </CardContent>
           </Card>
         ) : (
-          <div className="flex items-end justify-center gap-2 md:gap-4 min-h-[500px] md:min-h-[600px] relative overflow-x-auto px-4">
+          <div className="flex items-end justify-center gap-3 md:gap-6 min-h-[500px] md:min-h-[600px] relative overflow-x-auto px-4">
             {ranking.map((director, index) => {
               const podiumHeight = director.posicao === 1 ? 'h-80 md:h-96' :
                                   director.posicao === 2 ? 'h-64 md:h-80' :
@@ -100,7 +100,7 @@ function Ranking() {
               return (
                 <div key={director.id} className={`flex flex-col items-center ${podiumOrder}`}>
                   {/* Pódio Base */}
-                  <div className={`w-36 md:w-48 ${podiumHeight} ${
+                  <div className={`w-48 md:w-64 lg:w-72 ${podiumHeight} ${
                     director.posicao === 1
                       ? 'bg-gradient-to-t from-orange-600/40 to-orange-400/20 border-orange-500/50'
                       : director.posicao === 2
@@ -115,12 +115,12 @@ function Ranking() {
                   }}>
 
                     {/* Card do Diretor no topo do pódio */}
-                    <Card className="bg-black/80 backdrop-blur-sm border border-white/20 rounded-2xl p-4 mb-4">
+                    <div className="bg-white/90 backdrop-blur-sm border border-white/30 rounded-2xl p-4 mb-4 shadow-lg">
                       <div className="text-center">
                         {/* Posição e Emoji */}
                         <div className="flex items-center justify-center gap-2 mb-3">
-                          <div className="bg-black/60 backdrop-blur-sm rounded-full w-12 h-12 flex items-center justify-center border border-white/20">
-                            <span className="text-xl font-bold text-white">
+                          <div className="bg-white rounded-full w-12 h-12 flex items-center justify-center border-2 border-gray-200 shadow-md">
+                            <span className="text-xl font-bold text-gray-800">
                               #{director.posicao}
                             </span>
                           </div>
@@ -130,38 +130,44 @@ function Ranking() {
                         </div>
 
                         {/* Nome */}
-                        <h3 className="text-lg font-bold text-white mb-2">
+                        <h3 className="text-lg font-bold text-gray-800 mb-2">
                           Plataforma {director.username}
                         </h3>
 
                         {/* Pontuação Total */}
-                        <div className="bg-black/60 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/20 mb-3">
+                        <div className="bg-gradient-to-r from-orange-400 to-orange-500 rounded-xl px-4 py-2 mb-3 shadow-md">
                           <div className="text-2xl font-bold text-white">
                             {director.pontuacaoTotal}
                           </div>
-                          <div className="text-xs text-slate-300">pontos</div>
+                          <div className="text-xs text-orange-100">pontos</div>
                         </div>
                       </div>
-                    </Card>
+                    </div>
 
-                    {/* Métricas no corpo do pódio */}
-                    <div className="space-y-2">
-                      <div className="bg-black/40 backdrop-blur-sm rounded-lg p-2 text-center">
-                        <div className="text-sm font-semibold text-white">{director.agendamentos}</div>
-                        <div className="text-xs text-slate-300">Agendamentos</div>
-                        <div className="text-xs text-orange-400">{director.detalhePontos.pontosAgendamentos}pts</div>
+                    {/* Métricas no corpo do pódio - lado a lado */}
+                    <div className="grid grid-cols-3 gap-2 mb-4">
+                      <div className="bg-white/80 backdrop-blur-sm rounded-lg p-2 text-center shadow-md">
+                        <div className="text-sm font-bold text-gray-800">{director.agendamentos}</div>
+                        <div className="text-xs text-gray-600 mb-1">Agendamentos</div>
+                        <div className="text-xs text-orange-600 bg-orange-100 rounded-full px-1 py-0.5">
+                          {director.detalhePontos.pontosAgendamentos}pts
+                        </div>
                       </div>
 
-                      <div className="bg-black/40 backdrop-blur-sm rounded-lg p-2 text-center">
-                        <div className="text-sm font-semibold text-white">{director.visitasRealizadas}</div>
-                        <div className="text-xs text-slate-300">Visitas</div>
-                        <div className="text-xs text-orange-400">{director.detalhePontos.pontosVisitas}pts</div>
+                      <div className="bg-white/80 backdrop-blur-sm rounded-lg p-2 text-center shadow-md">
+                        <div className="text-sm font-bold text-gray-800">{director.visitasRealizadas}</div>
+                        <div className="text-xs text-gray-600 mb-1">Visitas</div>
+                        <div className="text-xs text-orange-600 bg-orange-100 rounded-full px-1 py-0.5">
+                          {director.detalhePontos.pontosVisitas}pts
+                        </div>
                       </div>
 
-                      <div className="bg-black/40 backdrop-blur-sm rounded-lg p-2 text-center">
-                        <div className="text-sm font-semibold text-white">{director.contratosAssinados}</div>
-                        <div className="text-xs text-slate-300">Contratos</div>
-                        <div className="text-xs text-orange-400">{director.detalhePontos.pontosContratos}pts</div>
+                      <div className="bg-white/80 backdrop-blur-sm rounded-lg p-2 text-center shadow-md">
+                        <div className="text-sm font-bold text-gray-800">{director.contratosAssinados}</div>
+                        <div className="text-xs text-gray-600 mb-1">Contratos</div>
+                        <div className="text-xs text-orange-600 bg-orange-100 rounded-full px-1 py-0.5">
+                          {director.detalhePontos.pontosContratos}pts
+                        </div>
                       </div>
                     </div>
 

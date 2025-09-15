@@ -28,17 +28,17 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md border-slate-700 bg-slate-800/50 backdrop-blur-sm">
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      <Card className="w-full max-w-md border-white/20 bg-white/90 backdrop-blur-sm shadow-xl">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-white">
+          <CardTitle className="text-2xl font-bold text-gray-800">
             Login - Diretores
           </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-slate-200">
+              <label htmlFor="email" className="text-sm font-medium text-gray-800">
                 Email
               </label>
               <Input
@@ -49,11 +49,11 @@ function Login() {
                 placeholder="Digite seu email"
                 required
                 disabled={loading}
-                className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
+                className="bg-white border-gray-300 text-gray-800 placeholder:text-gray-400"
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium text-slate-200">
+              <label htmlFor="password" className="text-sm font-medium text-gray-800">
                 Senha
               </label>
               <Input
@@ -64,11 +64,11 @@ function Login() {
                 placeholder="Digite sua senha"
                 required
                 disabled={loading}
-                className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
+                className="bg-white border-gray-300 text-gray-800 placeholder:text-gray-400"
               />
             </div>
             {error && (
-              <div className="text-sm text-red-400 bg-red-950/50 border border-red-500/20 rounded-md p-3">
+              <div className="text-sm text-red-600 bg-red-100 border border-red-300 rounded-md p-3">
                 {error}
               </div>
             )}
