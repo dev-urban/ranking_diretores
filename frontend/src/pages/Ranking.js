@@ -86,7 +86,7 @@ function Ranking() {
             </CardContent>
           </Card>
         ) : (
-          <div className="flex items-end justify-center gap-3 md:gap-6 min-h-[500px] md:min-h-[600px] relative overflow-x-auto px-4">
+          <div className="flex items-end justify-center gap-3 md:gap-6 min-h-[500px] md:min-h-[600px] relative px-8 py-4">
             {ranking.map((director, index) => {
               const podiumHeight = director.posicao === 1 ? 'h-80 md:h-96' :
                                   director.posicao === 2 ? 'h-64 md:h-80' :
@@ -102,20 +102,20 @@ function Ranking() {
                   {/* Pódio Base */}
                   <div className={`w-48 md:w-64 lg:w-72 ${podiumHeight} ${
                     director.posicao === 1
-                      ? 'bg-gradient-to-t from-orange-600/40 to-orange-400/20 border-orange-500/50'
+                      ? 'bg-gradient-to-t from-orange-600 to-orange-400'
                       : director.posicao === 2
-                      ? 'bg-gradient-to-t from-slate-500/40 to-slate-300/20 border-slate-400/50'
+                      ? 'bg-gradient-to-t from-slate-500 to-slate-300'
                       : director.posicao === 3
-                      ? 'bg-gradient-to-t from-amber-700/40 to-amber-500/20 border-amber-600/50'
-                      : 'bg-gradient-to-t from-slate-700/40 to-slate-500/20 border-slate-600/50'
-                  } backdrop-blur-xl border-2 rounded-t-3xl flex flex-col justify-between p-4 relative transition-all duration-500 hover:scale-105`}
+                      ? 'bg-gradient-to-t from-amber-700 to-amber-500'
+                      : 'bg-gradient-to-t from-slate-700 to-slate-500'
+                  } backdrop-blur-xl rounded-t-3xl flex flex-col justify-start p-4 relative transition-all duration-500 hover:scale-105`}
                   style={{
                     animationDelay: `${index * 200}ms`,
                     animation: 'podiumRise 0.8s ease-out forwards'
                   }}>
 
                     {/* Card do Diretor no topo do pódio */}
-                    <div className="bg-white/90 backdrop-blur-sm border border-white/30 rounded-2xl p-4 mb-4 shadow-lg">
+                    <div className="bg-white/90 backdrop-blur-sm border border-white/30 rounded-2xl p-4 mb-4 shadow-lg relative z-10">
                       <div className="text-center">
                         {/* Posição e Emoji */}
                         <div className="flex items-center justify-center gap-2 mb-3">
@@ -145,7 +145,7 @@ function Ranking() {
                     </div>
 
                     {/* Métricas no corpo do pódio - lado a lado */}
-                    <div className="grid grid-cols-3 gap-2 mb-4">
+                    <div className="grid grid-cols-3 gap-2 mb-4 relative z-10">
                       <div className="bg-white/80 backdrop-blur-sm rounded-lg p-2 text-center shadow-md">
                         <div className="text-sm font-bold text-gray-800">{director.agendamentos}</div>
                         <div className="text-xs text-gray-600 mb-1">Agendamentos</div>
@@ -171,9 +171,11 @@ function Ranking() {
                       </div>
                     </div>
 
-                    {/* Número da posição na base */}
-                    <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-6xl font-bold opacity-20">
-                      {director.posicao}
+                    {/* Número da posição ao fundo */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-8xl md:text-9xl font-bold opacity-10 text-white">
+                        {director.posicao}
+                      </div>
                     </div>
                   </div>
                 </div>
