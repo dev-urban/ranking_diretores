@@ -231,12 +231,9 @@ function Dashboard() {
                 <Button
                   asChild
                   variant="outline"
-                  className="gap-2"
                 >
                   <a href="/ranking" target="_blank" rel="noopener noreferrer">
-                    <Trophy className="h-4 w-4" />
                     Ver Ranking Público
-                    <ExternalLink className="h-4 w-4" />
                   </a>
                 </Button>
               </div>

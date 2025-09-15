@@ -13,16 +13,27 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
     setLoading(true);
 
     try {
       await authService.login(email, password);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'Erro ao fazer login');
+      setError(err.response?.data?.error || 'Login error');
     } finally {
       setLoading(false);
     }
@@ -45,7 +56,7 @@ function Login() {
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium text-foreground flex items-center gap-2">
                 <Mail className="h-4 w-4" />
@@ -57,9 +68,9 @@ function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Digite seu email"
-                required
                 disabled={loading}
                 className="h-10 transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                noValidate
               />
             </div>
             <div className="space-y-2">
