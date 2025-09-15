@@ -21,6 +21,10 @@
   --color-input: 217.2 32.6% 17.5%;
   --color-ring: 21 90% 48%;
   --radius: 0.5rem;
+
+  /* Orange colors for first place */
+  --color-orange-500: 238 116 24;
+  --color-orange-600: 214 104 27;
 }
 
 * {

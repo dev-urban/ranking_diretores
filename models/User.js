@@ -2,8 +2,19 @@ const db = require('../config/database');
 
 class User {
   static async findByEmail(email) {
+    const allowedEmails = [
+      'jessica.vigolo@urban.imb.br',
+      'luis.rosa@urban.imb.br',
+      'romario.lorenco@urban.imb.br',
+      'joao.menezes@urban.imb.br'
+    ];
+
+    if (!allowedEmails.includes(email)) {
+      return null;
+    }
+
     const [rows] = await db.execute(
-      'SELECT id, username, password, role_id, email FROM users WHERE email = ? AND role_id = 3',
+      'SELECT id, username, password, role_id, email FROM users WHERE email = ?',
       [email]
     );
     return rows[0];
@@ -25,8 +36,17 @@ class User {
   }
 
   static async getAllDirectors() {
+    const allowedEmails = [
+      'jessica.vigolo@urban.imb.br',
+      'luis.rosa@urban.imb.br',
+      'romario.lorenco@urban.imb.br',
+      'joao.menezes@urban.imb.br'
+    ];
+
+    const placeholders = allowedEmails.map(() => '?').join(',');
     const [rows] = await db.execute(
-      'SELECT id, username, email FROM users WHERE role_id = 3'
+      `SELECT id, username, email FROM users WHERE email IN (${placeholders})`,
+      allowedEmails
     );
     return rows;
   }
