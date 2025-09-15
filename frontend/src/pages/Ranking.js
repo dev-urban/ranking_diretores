@@ -90,27 +90,25 @@ function Ranking() {
             {ranking.map((director, index) => {
               const podiumHeight = director.posicao === 1 ? 'h-[450px] md:h-[520px]' :
                                   director.posicao === 2 ? 'h-80 md:h-[380px]' :
-                                  director.posicao === 3 ? 'h-64 md:h-80' : 'h-52 md:h-64';
+                                  director.posicao === 3 ? 'h-72 md:h-[320px]' : 'h-64 md:h-80';
 
               const podiumOrder = director.posicao === 1 ? 'order-2' :
                                  director.posicao === 2 ? 'order-1' :
                                  director.posicao === 3 ? 'order-3' :
                                  'order-4';
 
-              const marginClass = director.posicao === 4 ? 'ml-8 md:ml-16' : '';
-
               return (
-                <div key={director.id} className={`flex flex-col items-center ${podiumOrder} ${marginClass} animate-in column-delay-${index}`}>
+                <div key={director.id} className={`flex flex-col items-center ${podiumOrder} animate-in column-delay-${index}`}>
                   {/* Pódio Base */}
                   <div className={`w-72 md:w-80 lg:w-96 ${podiumHeight} ${
                     director.posicao === 1
-                      ? 'bg-gradient-to-t from-orange-600 to-orange-400 border-b-4 border-orange-500'
+                      ? 'bg-orange-500 border-b-4 border-orange-600'
                       : director.posicao === 2
-                      ? 'bg-gradient-to-t from-gray-400 to-gray-200 border-b-4 border-gray-300'
+                      ? 'bg-gray-300 border-b-4 border-gray-400'
                       : director.posicao === 3
-                      ? 'bg-gradient-to-t from-amber-700 to-amber-500 border-b-4 border-amber-600'
-                      : 'bg-gradient-to-t from-slate-600 to-slate-400 border-b-4 border-slate-500'
-                  } backdrop-blur-xl rounded-t-3xl flex flex-col justify-start p-4 relative transition-all duration-500 hover:scale-105 hover:-translate-y-1`}
+                      ? 'bg-amber-600 border-b-4 border-amber-700'
+                      : 'bg-slate-500 border-b-4 border-slate-600'
+                  } rounded-t-3xl flex flex-col justify-start p-4 relative transition-all duration-500 hover:scale-105 hover:-translate-y-1`}
                   style={{
                     animationDelay: `${index * 200}ms`,
                     animation: 'podiumRise 0.8s ease-out forwards'
@@ -125,7 +123,7 @@ function Ranking() {
                         : director.posicao === 3
                         ? 'border-l-amber-600'
                         : 'border-l-slate-500'
-                    } rounded-lg p-4 mb-4 hover:-translate-y-1 transition-all duration-200 relative z-10`}
+                    } rounded-lg p-4 mb-4 transition-all duration-200 relative z-10`}
                     style={{
                       backgroundColor: director.posicao === 1 ? '#FB923C' :
                                      director.posicao === 2 ? '#E5E7EB' :
