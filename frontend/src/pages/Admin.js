@@ -27,7 +27,7 @@ function Admin() {
     }
 
     loadDirectors();
-  }, []); // Remover dependências para evitar loop
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadDirectors = async () => {
     try {
