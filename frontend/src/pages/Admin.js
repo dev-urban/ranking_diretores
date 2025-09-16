@@ -27,7 +27,7 @@ function Admin() {
     }
 
     loadDirectors();
-  }, [navigate, user]);
+  }, []); // Remover dependências para evitar loop
 
   const loadDirectors = async () => {
     try {
@@ -53,8 +53,15 @@ function Admin() {
       const data = await response.json();
       console.log('Dados recebidos:', data);
       console.log('Diretores:', data.directors);
+      console.log('Quantidade de diretores:', data.directors?.length);
 
-      setDirectors(data.directors || []);
+      if (data.directors && data.directors.length > 0) {
+        setDirectors(data.directors);
+        console.log('State directors atualizado com:', data.directors);
+      } else {
+        console.warn('Nenhum diretor retornado da API');
+        setDirectors([]);
+      }
     } catch (error) {
       console.error('Erro ao carregar diretores:', error);
       setMessage('Erro ao carregar diretores');
@@ -123,6 +130,10 @@ function Admin() {
     return { pontosAgendamentos, pontosVisitas, pontosContratos, total };
   };
 
+  console.log('Estado atual - loading:', loading);
+  console.log('Estado atual - directors:', directors);
+  console.log('Estado atual - directors.length:', directors.length);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background p-4">
@@ -175,12 +186,15 @@ function Admin() {
         )}
 
         <div className="grid gap-6">
-          {directors.map((director) => {
-            const points = calculatePoints(director.metrics);
-            const isSaving = saving[director.id];
+          {console.log('Renderizando directors:', directors)}
+          {directors && directors.length > 0 ? (
+            directors.map((director) => {
+              const points = calculatePoints(director.metrics);
+              const isSaving = saving[director.id];
+              console.log('Renderizando diretor:', director);
 
-            return (
-              <Card key={director.id} className="border shadow-sm">
+              return (
+                <Card key={`director-${director.id}`} className="border shadow-sm">
                 <CardHeader>
                   <CardTitle className="text-xl text-foreground font-semibold flex items-center gap-2">
                     <User className="h-5 w-5" />
@@ -275,7 +289,10 @@ function Admin() {
                 </CardContent>
               </Card>
             );
-          })}
+          })
+          ) : (
+            <p className="text-center text-muted-foreground">Nenhum diretor para exibir</p>
+          )}
         </div>
 
         {directors.length === 0 && (
