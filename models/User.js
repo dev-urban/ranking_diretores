@@ -6,7 +6,8 @@ class User {
       'jessica.vigolo@urban.imb.br',
       'luis.rosa@urban.imb.br',
       'romario.lorenco@urban.imb.br',
-      'joao.menezes@urban.imb.br'
+      'joao.menezes@urban.imb.br',
+      'gabriela.copetti@urban.imb.br'
     ];
 
     if (!allowedEmails.includes(email)) {
@@ -36,11 +37,30 @@ class User {
   }
 
   static async getAllDirectors() {
-    const allowedEmails = [
+    // Apenas diretores, sem incluir admins
+    const directorEmails = [
       'jessica.vigolo@urban.imb.br',
       'luis.rosa@urban.imb.br',
       'romario.lorenco@urban.imb.br',
       'joao.menezes@urban.imb.br'
+    ];
+
+    const placeholders = directorEmails.map(() => '?').join(',');
+    const [rows] = await db.execute(
+      `SELECT id, username, email FROM users WHERE email IN (${placeholders})`,
+      directorEmails
+    );
+    return rows;
+  }
+
+  static async getAllUsers() {
+    // Todos os usuários permitidos (diretores + admins)
+    const allowedEmails = [
+      'jessica.vigolo@urban.imb.br',
+      'luis.rosa@urban.imb.br',
+      'romario.lorenco@urban.imb.br',
+      'joao.menezes@urban.imb.br',
+      'gabriela.copetti@urban.imb.br'
     ];
 
     const placeholders = allowedEmails.map(() => '?').join(',');
@@ -49,6 +69,10 @@ class User {
       allowedEmails
     );
     return rows;
+  }
+
+  static async isAdmin(email) {
+    return email === 'gabriela.copetti@urban.imb.br';
   }
 
   static async getRoleName(roleId) {

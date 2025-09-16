@@ -35,6 +35,10 @@ class Metrics {
     return metrics[userId];
   }
 
+  static async updateOrCreate(userId, data) {
+    return this.update(userId, data);
+  }
+
   static calculateScore(metrics) {
     const agendamentosPontos = (metrics.agendamentos || 0) * 5;
     const visitasPontos = (metrics.visitasRealizadas || 0) * 20;
