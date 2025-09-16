@@ -12,12 +12,16 @@ router.use(adminAuth);
 // Buscar todos os diretores com suas métricas
 router.get('/directors', async (req, res) => {
   try {
+    console.log('Admin buscando diretores...');
     const directors = await User.getAllDirectors(); // Já exclui admins
+    console.log('Diretores encontrados:', directors);
+
     const directorsWithMetrics = [];
 
     for (const director of directors) {
-
       const metrics = await Metrics.getByUserId(director.id);
+      console.log(`Métricas do diretor ${director.username} (ID: ${director.id}):`, metrics);
+
       directorsWithMetrics.push({
         id: director.id,
         username: director.username,
@@ -30,6 +34,7 @@ router.get('/directors', async (req, res) => {
       });
     }
 
+    console.log('Enviando diretores com métricas:', directorsWithMetrics);
     res.json({ directors: directorsWithMetrics });
   } catch (error) {
     console.error('Erro ao buscar diretores:', error);

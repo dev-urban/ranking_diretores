@@ -37,8 +37,30 @@ class User {
   }
 
   static async getAllDirectors() {
-    // Retorna dados fixos dos diretores para o ranking e admin
-    // IDs fixos que correspondem ao que está no metrics.json
+    // Apenas diretores, sem incluir admins
+    const directorEmails = [
+      'jessica.vigolo@urban.imb.br',
+      'luis.rosa@urban.imb.br',
+      'romario.lorenco@urban.imb.br',
+      'joao.menezes@urban.imb.br'
+    ];
+
+    try {
+      // Tenta buscar do banco MySQL (produção)
+      const placeholders = directorEmails.map(() => '?').join(',');
+      const [rows] = await db.execute(
+        `SELECT id, username, email FROM users WHERE email IN (${placeholders})`,
+        directorEmails
+      );
+
+      if (rows && rows.length > 0) {
+        return rows;
+      }
+    } catch (error) {
+      console.log('Usando dados mockados dos diretores:', error.message);
+    }
+
+    // Fallback para dados fixos (desenvolvimento ou erro no DB)
     return [
       { id: 1, username: 'Jessica', email: 'jessica.vigolo@urban.imb.br' },
       { id: 2, username: 'Luis', email: 'luis.rosa@urban.imb.br' },

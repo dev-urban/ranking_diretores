@@ -23,9 +23,10 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Senha incorreta' });
     }
 
-    // Verificar se é diretor (role_id = 3)
-    if (user.role_id !== 3) {
-      return res.status(403).json({ error: 'Acesso negado. Apenas diretores podem acessar.' });
+    // Permitir diretores (role_id = 3) e admin (Gabriela)
+    const isAdmin = await User.isAdmin(user.email);
+    if (user.role_id !== 3 && !isAdmin) {
+      return res.status(403).json({ error: 'Acesso negado. Apenas diretores e administradores podem acessar.' });
     }
 
     const token = jwt.sign(
