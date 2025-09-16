@@ -37,20 +37,14 @@ class User {
   }
 
   static async getAllDirectors() {
-    // Apenas diretores, sem incluir admins
-    const directorEmails = [
-      'jessica.vigolo@urban.imb.br',
-      'luis.rosa@urban.imb.br',
-      'romario.lorenco@urban.imb.br',
-      'joao.menezes@urban.imb.br'
+    // Retorna dados fixos dos diretores para o ranking e admin
+    // IDs fixos que correspondem ao que está no metrics.json
+    return [
+      { id: 1, username: 'Jessica', email: 'jessica.vigolo@urban.imb.br' },
+      { id: 2, username: 'Luis', email: 'luis.rosa@urban.imb.br' },
+      { id: 3, username: 'Romário', email: 'romario.lorenco@urban.imb.br' },
+      { id: 4, username: 'João', email: 'joao.menezes@urban.imb.br' }
     ];
-
-    const placeholders = directorEmails.map(() => '?').join(',');
-    const [rows] = await db.execute(
-      `SELECT id, username, email FROM users WHERE email IN (${placeholders})`,
-      directorEmails
-    );
-    return rows;
   }
 
   static async getAllUsers() {

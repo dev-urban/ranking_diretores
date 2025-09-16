@@ -4,7 +4,7 @@ import { authService, metricsService } from '../services/api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import { Calendar, Building2, FileText, Trophy, LogOut, Settings } from 'lucide-react';
+import { Calendar, Building2, FileText, Trophy, LogOut } from 'lucide-react';
 
 function Dashboard() {
   const [metrics, setMetrics] = useState({
@@ -22,8 +22,15 @@ function Dashboard() {
       navigate('/login');
       return;
     }
+
+    // Se for admin (Gabriela), redireciona para /admin
+    if (user?.email === 'gabriela.copetti@urban.imb.br') {
+      navigate('/admin');
+      return;
+    }
+
     loadMetrics();
-  }, [navigate]);
+  }, [navigate, user]);
 
   const loadMetrics = async () => {
     try {
@@ -104,17 +111,6 @@ function Dashboard() {
           </div>
           <div className="flex items-center gap-4">
             <span className="text-muted-foreground">Olá, {user?.username}</span>
-            {user?.email === 'gabriela.copetti@urban.imb.br' && (
-              <Button
-                onClick={() => navigate('/admin')}
-                variant="outline"
-                size="sm"
-                className="gap-2"
-              >
-                <Settings className="h-4 w-4" />
-                Admin
-              </Button>
-            )}
             <Button
               onClick={authService.logout}
               variant="outline"

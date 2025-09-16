@@ -142,15 +142,6 @@ function Admin() {
           <div className="flex items-center gap-4">
             <span className="text-muted-foreground">Olá, {user?.username}</span>
             <Button
-              onClick={() => navigate('/dashboard')}
-              variant="outline"
-              size="sm"
-              className="gap-2"
-            >
-              <User className="h-4 w-4" />
-              Meu Painel
-            </Button>
-            <Button
               onClick={authService.logout}
               variant="outline"
               size="sm"
