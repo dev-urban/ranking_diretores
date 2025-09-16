@@ -32,18 +32,29 @@ function Admin() {
   const loadDirectors = async () => {
     try {
       setLoading(true);
+      console.log('Iniciando busca de diretores...');
+      console.log('Token:', authService.getToken());
+
       const response = await fetch('/api/admin/directors', {
         headers: {
           'Authorization': `Bearer ${authService.getToken()}`
         }
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
+
       if (!response.ok) {
-        throw new Error('Erro ao carregar diretores');
+        const errorData = await response.text();
+        console.error('Erro na resposta:', errorData);
+        throw new Error(`Erro ao carregar diretores: ${response.status}`);
       }
 
       const data = await response.json();
-      setDirectors(data.directors);
+      console.log('Dados recebidos:', data);
+      console.log('Diretores:', data.directors);
+
+      setDirectors(data.directors || []);
     } catch (error) {
       console.error('Erro ao carregar diretores:', error);
       setMessage('Erro ao carregar diretores');
