@@ -46,11 +46,18 @@ function Dashboard() {
   };
 
   const handleChange = (field, value) => {
-    // Se o valor está vazio, mantém vazio, senão converte para número
-    const numericValue = value === '' ? '' : Math.max(0, parseInt(value) || 0);
+    // Permitir string vazia para poder apagar e redigitar
+    let processedValue;
+    if (value === '') {
+      processedValue = '';
+    } else {
+      const parsed = parseInt(value, 10);
+      processedValue = isNaN(parsed) ? '' : Math.max(0, parsed);
+    }
+
     setMetrics(prev => ({
       ...prev,
-      [field]: numericValue
+      [field]: processedValue
     }));
   };
 

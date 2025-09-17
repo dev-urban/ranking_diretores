@@ -11,7 +11,6 @@ function Admin() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState({});
   const [message, setMessage] = useState('');
-  const [editingValues, setEditingValues] = useState({});
   const navigate = useNavigate();
   const user = authService.getCurrentUser();
 
@@ -59,25 +58,9 @@ function Admin() {
       if (data.directors && data.directors.length > 0) {
         setDirectors(data.directors);
         console.log('State directors atualizado com:', data.directors);
-
-        // Inicializar valores de edição com os valores atuais
-        const initialEditingValues = {};
-        data.directors.forEach(director => {
-          console.log('Inicializando diretor:', director);
-          console.log('Metrics do diretor:', director.metrics);
-
-          initialEditingValues[director.id] = {
-            agendamentos: (director.metrics.agendamentos || 0).toString(),
-            visitasRealizadas: (director.metrics.visitasRealizadas || 0).toString(),
-            contratosAssinados: (director.metrics.contratosAssinados || 0).toString()
-          };
-        });
-        console.log('initialEditingValues criado:', initialEditingValues);
-        setEditingValues(initialEditingValues);
       } else {
         console.warn('Nenhum diretor retornado da API');
         setDirectors([]);
-        setEditingValues({});
       }
     } catch (error) {
       console.error('Erro ao carregar diretores:', error);
@@ -88,28 +71,23 @@ function Admin() {
   };
 
   const handleMetricChange = (directorId, field, value) => {
-    console.log('handleMetricChange called:', { directorId, field, value });
-    console.log('Current editingValues:', editingValues);
+    // Permitir string vazia para poder apagar e redigitar
+    let processedValue;
+    if (value === '') {
+      processedValue = '';
+    } else {
+      const parsed = parseInt(value, 10);
+      processedValue = isNaN(parsed) ? '' : Math.max(0, parsed);
+    }
 
-    // Atualizar apenas o estado de edição, não o estado principal
-    setEditingValues(prev => {
-      const newValues = {
-        ...prev,
-        [directorId]: {
-          ...prev[directorId],
-          [field]: value
-        }
-      };
-      console.log('New editingValues:', newValues);
-      return newValues;
-    });
-  };
-
-  const getDisplayValue = (directorId, field) => {
-    // Usar valor de edição se existir, senão usar valor original
-    const value = editingValues[directorId]?.[field] ?? '';
-    console.log('getDisplayValue:', { directorId, field, value, editingValues });
-    return value;
+    setDirectors(prev => prev.map(director =>
+      director.id === directorId
+        ? {
+            ...director,
+            metrics: { ...director.metrics, [field]: processedValue }
+          }
+        : director
+    ));
   };
 
   const saveMetrics = async (directorId) => {
@@ -118,12 +96,10 @@ function Admin() {
       setMessage('');
 
       const director = directors.find(d => d.id === directorId);
-      const editingData = editingValues[directorId];
-
       const metrics = {
-        agendamentos: editingData?.agendamentos === '' ? 0 : parseInt(editingData?.agendamentos, 10) || 0,
-        visitasRealizadas: editingData?.visitasRealizadas === '' ? 0 : parseInt(editingData?.visitasRealizadas, 10) || 0,
-        contratosAssinados: editingData?.contratosAssinados === '' ? 0 : parseInt(editingData?.contratosAssinados, 10) || 0
+        agendamentos: director.metrics.agendamentos === '' ? 0 : parseInt(director.metrics.agendamentos) || 0,
+        visitasRealizadas: director.metrics.visitasRealizadas === '' ? 0 : parseInt(director.metrics.visitasRealizadas) || 0,
+        contratosAssinados: director.metrics.contratosAssinados === '' ? 0 : parseInt(director.metrics.contratosAssinados) || 0
       };
 
       const response = await fetch(`/api/admin/directors/${directorId}/metrics`, {
@@ -139,23 +115,6 @@ function Admin() {
         throw new Error('Erro ao salvar métricas');
       }
 
-      // Atualizar o estado principal dos diretores
-      setDirectors(prev => prev.map(d =>
-        d.id === directorId
-          ? { ...d, metrics: { ...d.metrics, ...metrics } }
-          : d
-      ));
-
-      // Atualizar valores de edição para refletir os valores salvos
-      setEditingValues(prev => ({
-        ...prev,
-        [directorId]: {
-          agendamentos: metrics.agendamentos.toString(),
-          visitasRealizadas: metrics.visitasRealizadas.toString(),
-          contratosAssinados: metrics.contratosAssinados.toString()
-        }
-      }));
-
       setMessage(`Métricas de ${director.username} atualizadas com sucesso!`);
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
@@ -166,13 +125,10 @@ function Admin() {
     }
   };
 
-  const calculatePoints = (directorId) => {
-    const editingData = editingValues[directorId];
-    if (!editingData) return { pontosAgendamentos: 0, pontosVisitas: 0, pontosContratos: 0, total: 0 };
-
-    const agendamentos = editingData.agendamentos === '' ? 0 : parseInt(editingData.agendamentos, 10) || 0;
-    const visitas = editingData.visitasRealizadas === '' ? 0 : parseInt(editingData.visitasRealizadas, 10) || 0;
-    const contratos = editingData.contratosAssinados === '' ? 0 : parseInt(editingData.contratosAssinados, 10) || 0;
+  const calculatePoints = (metrics) => {
+    const agendamentos = metrics.agendamentos === '' ? 0 : parseInt(metrics.agendamentos) || 0;
+    const visitas = metrics.visitasRealizadas === '' ? 0 : parseInt(metrics.visitasRealizadas) || 0;
+    const contratos = metrics.contratosAssinados === '' ? 0 : parseInt(metrics.contratosAssinados) || 0;
 
     const pontosAgendamentos = agendamentos * 5;
     const pontosVisitas = visitas * 20;
@@ -241,7 +197,7 @@ function Admin() {
           {console.log('Renderizando directors:', directors)}
           {directors && directors.length > 0 ? (
             directors.map((director) => {
-              const points = calculatePoints(director.id);
+              const points = calculatePoints(director.metrics);
               const isSaving = saving[director.id];
               console.log('Renderizando diretor:', director);
 
@@ -264,7 +220,7 @@ function Admin() {
                       <div className="space-y-2">
                         <Input
                           type="number"
-                          value={getDisplayValue(director.id, 'agendamentos')}
+                          value={director.metrics.agendamentos}
                           onChange={(e) => handleMetricChange(director.id, 'agendamentos', e.target.value)}
                           min="0"
                           disabled={isSaving}
@@ -284,7 +240,7 @@ function Admin() {
                       <div className="space-y-2">
                         <Input
                           type="number"
-                          value={getDisplayValue(director.id, 'visitasRealizadas')}
+                          value={director.metrics.visitasRealizadas}
                           onChange={(e) => handleMetricChange(director.id, 'visitasRealizadas', e.target.value)}
                           min="0"
                           disabled={isSaving}
@@ -304,7 +260,7 @@ function Admin() {
                       <div className="space-y-2">
                         <Input
                           type="number"
-                          value={getDisplayValue(director.id, 'contratosAssinados')}
+                          value={director.metrics.contratosAssinados}
                           onChange={(e) => handleMetricChange(director.id, 'contratosAssinados', e.target.value)}
                           min="0"
                           disabled={isSaving}
