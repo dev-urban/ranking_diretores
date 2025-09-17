@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService, metricsService } from '../services/api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
@@ -30,7 +30,7 @@ function Dashboard() {
     }
 
     loadMetrics();
-  }, [navigate, user]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadMetrics = async () => {
     try {
@@ -84,7 +84,7 @@ function Dashboard() {
     }
   };
 
-  const calculatePoints = () => {
+  const calculatePoints = useMemo(() => {
     const agendamentos = metrics.agendamentos === '' ? 0 : parseInt(metrics.agendamentos) || 0;
     const visitas = metrics.visitasRealizadas === '' ? 0 : parseInt(metrics.visitasRealizadas) || 0;
     const contratos = metrics.contratosAssinados === '' ? 0 : parseInt(metrics.contratosAssinados) || 0;
@@ -100,9 +100,9 @@ function Dashboard() {
       pontosContratos,
       total
     };
-  };
+  }, [metrics.agendamentos, metrics.visitasRealizadas, metrics.contratosAssinados]);
 
-  const points = calculatePoints();
+  const points = calculatePoints;
 
   return (
     <div className="min-h-screen bg-background p-4">
