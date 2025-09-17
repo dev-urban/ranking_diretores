@@ -71,7 +71,15 @@ function Admin() {
   };
 
   const handleMetricChange = (directorId, field, value) => {
-    const numericValue = value === '' ? '' : Math.max(0, parseInt(value) || 0);
+    // Permitir string vazia ou valores numéricos válidos
+    let numericValue;
+    if (value === '' || value === null || value === undefined) {
+      numericValue = 0;
+    } else {
+      const parsed = parseInt(value, 10);
+      numericValue = isNaN(parsed) ? 0 : Math.max(0, parsed);
+    }
+
     setDirectors(prev => prev.map(director =>
       director.id === directorId
         ? {
@@ -89,9 +97,9 @@ function Admin() {
 
       const director = directors.find(d => d.id === directorId);
       const metrics = {
-        agendamentos: director.metrics.agendamentos === '' ? 0 : parseInt(director.metrics.agendamentos) || 0,
-        visitasRealizadas: director.metrics.visitasRealizadas === '' ? 0 : parseInt(director.metrics.visitasRealizadas) || 0,
-        contratosAssinados: director.metrics.contratosAssinados === '' ? 0 : parseInt(director.metrics.contratosAssinados) || 0
+        agendamentos: parseInt(director.metrics.agendamentos, 10) || 0,
+        visitasRealizadas: parseInt(director.metrics.visitasRealizadas, 10) || 0,
+        contratosAssinados: parseInt(director.metrics.contratosAssinados, 10) || 0
       };
 
       const response = await fetch(`/api/admin/directors/${directorId}/metrics`, {
@@ -118,9 +126,9 @@ function Admin() {
   };
 
   const calculatePoints = (metrics) => {
-    const agendamentos = metrics.agendamentos === '' ? 0 : parseInt(metrics.agendamentos) || 0;
-    const visitas = metrics.visitasRealizadas === '' ? 0 : parseInt(metrics.visitasRealizadas) || 0;
-    const contratos = metrics.contratosAssinados === '' ? 0 : parseInt(metrics.contratosAssinados) || 0;
+    const agendamentos = parseInt(metrics.agendamentos, 10) || 0;
+    const visitas = parseInt(metrics.visitasRealizadas, 10) || 0;
+    const contratos = parseInt(metrics.contratosAssinados, 10) || 0;
 
     const pontosAgendamentos = agendamentos * 5;
     const pontosVisitas = visitas * 20;
