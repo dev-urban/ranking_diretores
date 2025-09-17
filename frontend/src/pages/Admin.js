@@ -63,12 +63,16 @@ function Admin() {
         // Inicializar valores de edição com os valores atuais
         const initialEditingValues = {};
         data.directors.forEach(director => {
+          console.log('Inicializando diretor:', director);
+          console.log('Metrics do diretor:', director.metrics);
+
           initialEditingValues[director.id] = {
-            agendamentos: director.metrics.agendamentos.toString(),
-            visitasRealizadas: director.metrics.visitasRealizadas.toString(),
-            contratosAssinados: director.metrics.contratosAssinados.toString()
+            agendamentos: (director.metrics.agendamentos || 0).toString(),
+            visitasRealizadas: (director.metrics.visitasRealizadas || 0).toString(),
+            contratosAssinados: (director.metrics.contratosAssinados || 0).toString()
           };
         });
+        console.log('initialEditingValues criado:', initialEditingValues);
         setEditingValues(initialEditingValues);
       } else {
         console.warn('Nenhum diretor retornado da API');
@@ -84,19 +88,28 @@ function Admin() {
   };
 
   const handleMetricChange = (directorId, field, value) => {
+    console.log('handleMetricChange called:', { directorId, field, value });
+    console.log('Current editingValues:', editingValues);
+
     // Atualizar apenas o estado de edição, não o estado principal
-    setEditingValues(prev => ({
-      ...prev,
-      [directorId]: {
-        ...prev[directorId],
-        [field]: value
-      }
-    }));
+    setEditingValues(prev => {
+      const newValues = {
+        ...prev,
+        [directorId]: {
+          ...prev[directorId],
+          [field]: value
+        }
+      };
+      console.log('New editingValues:', newValues);
+      return newValues;
+    });
   };
 
   const getDisplayValue = (directorId, field) => {
     // Usar valor de edição se existir, senão usar valor original
-    return editingValues[directorId]?.[field] ?? '';
+    const value = editingValues[directorId]?.[field] ?? '';
+    console.log('getDisplayValue:', { directorId, field, value, editingValues });
+    return value;
   };
 
   const saveMetrics = async (directorId) => {
